@@ -1,63 +1,54 @@
-# activitylog
+# activitylog-docs
 
-**ORM-agnostic entity audit trail for TypeScript**, with the DX of [spatie/laravel-activitylog](https://github.com/spatie/laravel-activitylog). The core knows nothing about any ORM or NestJS — adapters are first-class.
+Content source for the [activitylog](https://activitylog.readme.io) hosted documentation site, powered by [readme.io](https://readme.com).
 
-> **Status:** 1.0 — Core (manual logging, context, query API), NestJS module, TypeORM, and Prisma adapters are published. Drizzle adapter in preview.
+## What this is
 
-## The bet
+This repo holds the Markdown files that readme.io reads to render the public docs at **https://activitylog.readme.io**.  
+It is **not** the source of truth for the API — that lives in [activitylog](https://github.com/PedroPCardoso/activitylog). When the API docs change there, this repo is updated to reflect them.
 
-- **ORM-agnostic core + first-class adapters** — TypeORM, Prisma, Drizzle.
-- **`iff-committed`** — an activity persists *if and only if* the mutation that caused it commits (when transactional). The audit trail never orphans or drops a record.
-- **Causer resolved automatically** from request context (AsyncLocalStorage).
-- **Honest coverage** — where a guarantee isn't possible (e.g. bulk/nested writes), it's declared in a coverage matrix, never faked.
-- **Redaction on by default** — passwords, tokens and PII don't leak into the audit trail.
+## Branch structure
 
-## Packages
+| Branch | Purpose |
+|--------|---------|
+| `v1.0` | Active content — what readme.io syncs from |
+| `main`  | Meta / tooling only (this README, scripts) |
 
-| Package | Contents |
-|---|---|
-| `activitylog-core@1` | Agnostic core: logger, store, diff, context, query API |
-| `activitylog-nestjs@1` | NestJS module + TypeORM adapter (subpath) |
-| `activitylog-nextjs@1` | Prisma + Drizzle adapters (subpaths) |
+## File layout (v1.0)
 
-## Quick start
-
-```ts
-import { SqlExecutorStore, createActivityLogger, causerRef, subjectRef } from 'activitylog-core';
-
-const store = new SqlExecutorStore({
-  dataSource: {
-    dialect: 'postgres',
-    execute: async (sql, params) => pool.query(sql, params).then((r) => r.rows),
-  },
-});
-
-const logger = createActivityLogger({ store });
-
-await logger
-  .activity('billing')
-  .performedOn(subjectRef('Order', order.id))
-  .causedBy(causerRef('User', userId))
-  .withProperties({ plan: 'pro' })
-  .event('subscribed')
-  .log('Subscription created');
+```
+docs/
+  Getting Started/
+    getting-started.md   ← mirrors activitylog docs (English)
+    _order.yaml
+  _order.yaml
+reference/
+  ReadMeConfig/          ← readme.io reference pages
 ```
 
-## Contents
+Each Markdown file starts with a readme.io frontmatter block:
 
-- [Getting Started](docs/getting-started)
-- [Manual Logging](docs/manual-logging)
-- [Context and Batches](docs/context-and-batches)
-- [NestJS Integration](docs/nestjs-integration)
-- [nestjs-cls Interoperability](docs/nestjs-cls-interop)
-- [TypeORM Adapter](docs/typeorm-adapter)
-- [Prisma Adapter](docs/prisma-adapter)
-- [Querying Activities](docs/querying-activities)
-- [Schema and Migrations](docs/schema-and-migrations)
-- [Architecture Decisions](docs/architecture-decisions)
-- [Deliberate Divergences from Spatie](docs/divergences-from-spatie)
-- [Releasing](docs/releasing)
+```yaml
+---
+title: <page title>
+excerpt: <short description>
+hidden: false
+---
+```
 
-## License
+## How to update
 
-[MIT](LICENSE)
+After merging doc changes into **activitylog**, push the updated content here:
+
+```bash
+# 1. Get the current SHA of the file to update
+gh api "repos/PedroPCardoso/activitylog-docs/contents/docs/Getting%20Started/getting-started.md?ref=v1.0" \
+  | python3 -c "import json,sys; print(json.load(sys.stdin)['sha'])"
+
+# 2. Push the new content via the GitHub API
+```
+
+## Related
+
+- [activitylog](https://github.com/PedroPCardoso/activitylog) — monorepo (activitylog-core + activitylog-nestjs + activitylog-nextjs)
+- [activitylog.readme.io](https://activitylog.readme.io) — live docs site
