@@ -2,7 +2,7 @@
 
 **ORM-agnostic entity audit trail for TypeScript**, with the DX of [spatie/laravel-activitylog](https://github.com/spatie/laravel-activitylog). The core knows nothing about any ORM or NestJS — adapters are first-class.
 
-> **Status:** production-ready. Core (manual logging, context, query API), NestJS module, TypeORM, and Prisma adapters are published. Drizzle adapter coming next.
+> **Status:** 1.0 — Core (manual logging, context, query API), NestJS module, TypeORM, and Prisma adapters are published. Drizzle adapter in preview.
 
 ## The bet
 
@@ -16,9 +16,9 @@
 
 | Package | Contents |
 |---|---|
-| `activitylog-core` | Agnostic core: logger, store, diff, context, query API |
-| `activitylog-nestjs` | NestJS module + TypeORM adapter (subpath) |
-| `activitylog-nextjs` | Prisma + Drizzle adapters (subpaths) |
+| `activitylog-core@1` | Agnostic core: logger, store, diff, context, query API |
+| `activitylog-nestjs@1` | NestJS module + TypeORM adapter (subpath) |
+| `activitylog-nextjs@1` | Prisma + Drizzle adapters (subpaths) |
 
 ## Quick start
 

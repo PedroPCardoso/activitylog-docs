@@ -54,7 +54,7 @@ Registration happens after initialization because TypeORM rebuilds its configure
 }
 ```
 
-Created activities have empty `old`; hard-deleted activities have empty `attributes`. Soft-delete diffs contain the changed delete-date column. Composite primary keys are outside the 0.x contract and are skipped.
+Created activities have empty `old`; hard-deleted activities have empty `attributes`. Soft-delete diffs contain the changed delete-date column. Composite primary keys are outside the 1.0 contract and are skipped.
 
 ## auditedUpdate
 

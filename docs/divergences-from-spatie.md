@@ -25,7 +25,7 @@ Sensitive field names are deeply redacted before persistence. A `beforePersist` 
 
 ## Identity is ORM-agnostic
 
-Subjects and causers use an opaque type plus a string-compatible single primary key. Composite subject keys are outside the 0.x contract. This avoids coupling the core to ORM model instances or database-specific key types.
+Subjects and causers use an opaque type plus a string-compatible single primary key. Composite subject keys are outside the 1.0 contract. This avoids coupling the core to ORM model instances or database-specific key types.
 
 ## Transactions are claimed only where they are controlled
 
